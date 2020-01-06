@@ -16,3 +16,7 @@ def connect_Octo2013():
     #Connect to an existing database
     conn = psycopg2.connect(user="postgres", password="vaxcrio1", host="localhost", port="5432", database="Octo2013")
     return(conn)
+def connect_Octo2015():
+    #Connect to an existing database
+    conn = psycopg2.connect(user="postgres", password="vaxcrio1", host="localhost", port="5432", database="Octo2015")
+    return(conn)

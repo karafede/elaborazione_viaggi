@@ -27,7 +27,10 @@ to run in the command line
 """
 
 # to run in the command line
-# python preparaRaw.py "extract_enea_dataset2_01_1-10000.csv" "DatiRaw01_1-100000.csv" 1 100000
+# python preparaRaw_Octo2015.py "MOB_SQUARE_0.csv" "DatiRaw_Octo_11_2015_1-10000000.csv" 1 10000000
+# python preparaRaw_Octo2015.py "MOB_SQUARE_0.csv" "DatiRaw_Octo_11_2015_10000001-20000000.csv" 10000001 20000000
+# python preparaRaw_Octo2015.py "MOB_SQUARE_0.csv" "DatiRaw_Octo_11_2015_20000001-31919514.csv" 20000001 31919514
+
 
 
 __autore__ = "Massimo Mancini & Federico Karagulian"
@@ -44,7 +47,7 @@ import os
 cwd = os.getcwd()
 # change working directoy
 # os.chdir('C:\\ENEA_CAS_WORK\\Mancini_stuff\\OctoPerFederico')
-os.chdir('C:\\ENEA_CAS_WORK\\Mancini_stuff\\Octo2015')
+os.chdir('C:\\ENEA_CAS_WORK\\Mancini_stuff\\Octo2015\\extracted_files')
 cwd = os.getcwd()
 
 
@@ -58,8 +61,8 @@ class Record(object):
                   "Direzione",
                   "Qualita",
                   "Pannello",
-                  "Distanza",
-                  "Strada"]
+                  "Distanza"]
+                 # "Strada"]
 
     def __init__(self,
                  Id_record_raw="",
@@ -71,8 +74,8 @@ class Record(object):
                  Direzione="",
                  Qualita="",
                  Pannello="",
-                 Distanza="",
-                 Strada=""):
+                 Distanza=""):
+                 # Strada=""):
         self.Id_record_raw = Id_record_raw
         self.Id_terminale = Id_terminale
         self.DataOra = DataOra
@@ -83,7 +86,7 @@ class Record(object):
         self.Qualita = Qualita
         self.Pannello = Pannello
         self.Distanza = Distanza
-        self.Strada = Strada
+        # self.Strada = Strada
 
     def csvRow(self):
         return [self.Id_record_raw,
@@ -95,18 +98,13 @@ class Record(object):
                 self.Direzione,
                 self.Qualita,
                 self.Pannello,
-                self.Distanza,
-                self.Strada]
+                self.Distanza]
+                # self.Strada]
 
 
 def usage():
     print("for help use -h or --help")
     sys.exit(0)
-
-finpName = "extract_enea_dataset2_01_1-10000.csv"
-foutCsvName = "DatiRaw01_1-10000.csv "
-recIni = 1
-recFine = 10000
 
 def process(args):
     finpName = args[0]
@@ -124,12 +122,13 @@ def process(args):
     csvWriter = csv.writer(fcsv, dialect='excel', delimiter=';', lineterminator='\n')
     csvWriter.writerow(Record.csvHeading)
 
-# read first record
+
+    # read first record
     recNo = 0
+
     line = finp.readline()
     line = line.rstrip('\n')
     line = line + ","
-    print(line)
 
     type = 0
     while line:
@@ -155,10 +154,11 @@ def process(args):
             lonWGS84 = int(campi[4]) / 1000000.0
             latWGS84 = int(campi[3]) / 1000000.0
             recPunto = Record(Id_record_raw, campi[0], campi[1] + " " + campi[2], lonWGS84, latWGS84, \
-                              campi[5], campi[6], campi[7], campi[8], campi[9], campi[10])
+                              campi[5], campi[6], campi[7], campi[8], campi[9]) # campi[10]
             csvWriter.writerow(recPunto.csvRow())
 
         line = finp.readline()
+
         if line:
             line = line.rstrip('\n')
             line = line + ","
